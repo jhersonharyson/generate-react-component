@@ -12,8 +12,14 @@ This extension, upon receiving a component name, generates a test file using the
 ## Usage
 
 ### Step 1:
+#### Right Click:
+- After installing the extension, select the folder and perform a  mouse `Right Click`.
+- Select the `generate react component` option
+![Step Right Click](./src/img/step-right-click.png)
+
+#### Command Palette:
 - After installing the extension, open the command palette using `Ctrl+Shift+P` or `Cmd+Shift+P`.
-- Type `generate component` and press `Enter` to initiate component generation.
+- Type `generate react component` and press `Enter` to initiate component generation.
 
 ![Step 1](./src/img/step-one.gif)
 
@@ -26,7 +32,7 @@ This extension, upon receiving a component name, generates a test file using the
 - Choose the destination folder for the component or stick with the default path (`src/components`).
 - `Note: The Default folder option is currently unavailable but will be soon.`
 
-![Step 3](./src/img/step-three.png)
+![Step 3](./src/img/step-three.gif)
 
 ### Step 4:
 - Select component type.
