@@ -29,20 +29,26 @@ This extension, upon receiving a component name, generates a test file using the
 ![Step 3](./src/img/step-three.png)
 
 ### Step 4:
-- Select the desired style library.
-- Options include `Material-UI`, `Styled-Components`, `Style without library`, or `Without style`.
+- Select component type.
+- Options include `Component` or `Page`.
 
-![Step 4](./src/img/step-four.png)
+![Step 4](./src/img/step-four.gif)
 
 ### Step 5:
+- Select the desired style library.
+- Options include `Styled-Components`, `Style without library`, or `Without style`.
+
+![Step 4](./src/img/step-five.png)
+
+### Step 6:
 - Indicate whether you want to generate an interface for the component.
 - Choose between `Yes` or `No`.
 
 ![Step 5](./src/img/step-five.png)
 
-### Step 6:
+### Step 7:
 - Choose the file name format.
-- Available formats: KebabCase and PascalCase.
+- Available formats: `Kebab Case` and `Pascal Case``.
 - Examples:
   - KebabCase:
     - `button-submit-styles.ts`
@@ -55,7 +61,7 @@ This extension, upon receiving a component name, generates a test file using the
     - `ButtonSubmit.tsx`
     - `index.ts`
 
-![Step 6](./src/img/step-six.png)
+![Step 6](./src/img/step-seven.png)
 
 ### Result:
 - All generated files contain the starting code for each respective type.
