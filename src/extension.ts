@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const getConfigurations = async () => {
 			try {
 				const root = (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0])?.uri.fsPath;
-				const fileContent = await vscode.workspace.fs.readFile(vscode.Uri.file(root + "/grc.json"));
+				const fileContent = await vscode.workspace.fs.readFile(vscode.Uri.file(root + "/rgc.json"));
 				const config: any = JSON.parse(fileContent.toString());
 
 				const styleStrategy: null | 'styled-components' | 'no-library' | 'no-style' = config.generateOptions.styleStrategy;

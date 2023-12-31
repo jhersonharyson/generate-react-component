@@ -81,6 +81,23 @@ This extension, upon receiving a component name, generates a test file using the
 - `button.tsx`: Component file for the component.
 - `index.ts`: Index file for exporting the component.
 
+
+### Default Options
+- You can define tefault configuration for react generate component.
+- Create a file named `rgc.json` in project root directory.
+```javascript
+{
+    "generateOptions": {
+        "styleStrategy": "styled-components", 
+        "namingStrategy": "kebab", 
+        "typeStrategy": "types", 
+        "moduleStrategy": "esnext",
+        "componentTypeStrategy": "component"
+    }
+}
+```
+- All configured settings will be skipped when creating a new component.
+
 ## Requirements
 
 If you want to use the style library `Styled-Components`, you need to install the `styled-components` package.
