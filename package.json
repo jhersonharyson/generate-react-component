@@ -1,5 +1,5 @@
 {
-  "name": "generate-react-component",
+  "name": "react-generate-component",
   "displayName": "Generate React component",
   "description": "This extension generates a component and style for the given component name.",
   "version": "0.0.1",
