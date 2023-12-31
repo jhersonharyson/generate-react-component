@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { ComponentType, FormatTypesExampleEnum } from './enums';
-import { FormatNameProps, createFilesProps } from './interfaces';
+import { FormatNameProps, CreateFilesProps } from './interfaces';
 import { formatNameFile, formatNameComponent, generateFiles, generateFolder, writeFile } from './utils';
 export function activate(context: vscode.ExtensionContext) {
 
@@ -230,7 +230,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return withInterface ? withInterface.value : false;
 		}
 
-		async function createFiles({ nameComponent, componentType, pathSelected, chooseLibrary, chooseFormatNameFiles, chooseInterface: chooseInterface }: createFilesProps) {
+		async function createFiles({ nameComponent, componentType, pathSelected, chooseLibrary, chooseFormatNameFiles, chooseInterface: chooseInterface }: CreateFilesProps) {
 			const formatName = formatNameFile({ chosenNameFormat: chooseFormatNameFiles, nameComponent } as FormatNameProps);
 			const pathComponent = generateFolder({ pathSelected, nameComponent: formatName, chooseInterface: chooseInterface });
 			const formatNameFunctionComponent = formatNameComponent({ nameComponent } as FormatNameProps);
