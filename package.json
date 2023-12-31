@@ -1,0 +1,72 @@
+{
+  "name": "generate-component-and-style",
+  "displayName": "Generate React component",
+  "description": "This extension generates a component and style for the given component name.",
+  "version": "0.1.7",
+  "repository": "https://github.com/jhersonharyson/generate-react-component/tree/main",
+  "publisher": "jhersonharyson",
+  "icon": "extension/img/new-logo.png",
+  "engines": {
+    "vscode": "^1.69.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "author": {
+    "name": "Jherson Haryson"
+  },
+  "activationEvents": [
+    "onCommand:generate-react-component.gc"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "generate-react-component.gc",
+        "title": "Generate React Component 🚀"
+      }
+    ],
+    "menus": {
+      "explorer/context": [{
+        "when": "resourceUri.scheme == 'file' && resourceUri.fsPath | path.basename | path.extname == ''",
+          "command": "generate-react-component.gc",
+          "group": "YourGroup@1",
+          "context": "explorer/resourceIsFolder"
+    }]
+  }
+  },
+  "keywords": [
+    "Generate",
+    "Component",
+    "Style",
+    "React",
+    "Styled-Components",
+    "Unit Test",
+    "Interface",
+    "TypeScript"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.1",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.69.0",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "@vscode/test-electron": "^2.2.2",
+    "eslint": "^8.32.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "tsc": "^2.0.4"
+  },
+  "dependencies": {
+    "typescript": "^5.1.3"
+  }
+}
