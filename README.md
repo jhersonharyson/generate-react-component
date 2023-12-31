@@ -15,6 +15,7 @@ This extension, upon receiving a component name, generates a test file using the
 #### Right Click:
 - After installing the extension, select the folder and perform a  mouse `Right Click`.
 - Select the `generate react component` option
+
 ![Step Right Click](./src/img/step-right-click.png)
 
 #### Command Palette:
