@@ -2,7 +2,7 @@
   "name": "generate-react-component",
   "displayName": "Generate React component",
   "description": "This extension generates a component and style for the given component name.",
-  "version": "0.1.7",
+  "version": "0.0.1",
   "repository": "https://github.com/jhersonharyson/generate-react-component/tree/main",
   "publisher": "jhersonharyson",
   "icon": "extension/img/new-logo.png",
