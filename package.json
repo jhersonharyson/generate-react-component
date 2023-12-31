@@ -4,7 +4,7 @@
   "description": "This extension generates a component and style for the given component name.",
   "version": "0.0.1",
   "repository": "https://github.com/jhersonharyson/generate-react-component/tree/main",
-  "publisher": "jhersonharyson",
+  "publisher": "JHaryson",
   "icon": "extension/img/new-logo.png",
   "engines": {
     "vscode": "^1.69.0"
