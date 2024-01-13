@@ -119,14 +119,28 @@ export function activate(context: vscode.ExtensionContext) {
 					value: "styled-components"
 				},
 				{
-					label: "Create style without library",
+					label: "CSS",
 					description: "",
 					detail: "",
 					picked: false,
-					value: "no-library"
+					value: "css"
 				},
 				{
-					label: "Don't create style",
+					label: "SASS",
+					description: "",
+					detail: "",
+					picked: false,
+					value: "sass"
+				},
+				{
+					label: "CSS modules",
+					description: "",
+					detail: "",
+					picked: false,
+					value: "css-modules"
+				},
+				{
+					label: "Don't create style file",
 					description: "",
 					detail: "",
 					picked: false,
@@ -154,7 +168,7 @@ export function activate(context: vscode.ExtensionContext) {
 					value: "kebab"
 				},
 				{
-					label: "Pascal Case",
+					label: "Camel Case",
 					description: FormatTypesExampleEnum.pascal,
 					detail: "",
 					picked: false,
@@ -164,7 +178,7 @@ export function activate(context: vscode.ExtensionContext) {
 			], {
 				placeHolder: "Choose file name format"
 			}) as any;
-			return format ? format.value : false;
+			return format ? format.value : "";
 		}
 
 		async function chooseComponentType() {
@@ -230,7 +244,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return withInterface ? withInterface.value : false;
 		}
 
-		async function createFiles({ nameComponent, componentType, pathSelected, chooseLibrary, chooseFormatNameFiles, chooseInterface: chooseInterface }: CreateFilesProps) {
+		async function createFiles({ nameComponent, componentType, pathSelected, chooseLibrary, chooseFormatNameFiles, chooseInterface }: CreateFilesProps) {
 			const formatName = formatNameFile({ chosenNameFormat: chooseFormatNameFiles, nameComponent } as FormatNameProps);
 			const pathComponent = generateFolder({ pathSelected, nameComponent: formatName, chooseInterface: chooseInterface });
 			const formatNameFunctionComponent = formatNameComponent({ nameComponent } as FormatNameProps);
@@ -239,11 +253,11 @@ export function activate(context: vscode.ExtensionContext) {
 				nameComponent: formatName,
 				componentType: componentType,
 				pathComponent: pathComponent,
-				generateStyle: chooseLibrary !== "no-style",
+				styleType: chooseLibrary,
 				generateInterface: chooseInterface,
 			});
 
-			if (["types", "interfaces"].includes(chooseInterface)) {
+			if ("interfaces" === chooseInterface) {
 				await writeFile({
 					pathFile: files.interfaceGenerated,
 					contentFile: "export interface " + formatNameFunctionComponent.nameComponent + "Props {\n\ttitle: string;\n}\n"
@@ -251,7 +265,19 @@ export function activate(context: vscode.ExtensionContext) {
 
 				await writeFile({
 					pathFile: files.exportInterfaceGenerated,
-					contentFile: "export * from './" + formatName + "-props.interface';"
+					contentFile: "export type { " + formatNameFunctionComponent.nameComponent + "Props } from './" + formatName + ".d.ts';"
+				});
+			}
+
+			if ("types" === chooseInterface) {
+				await writeFile({
+					pathFile: files.interfaceGenerated,
+					contentFile: "export type " + formatNameFunctionComponent.nameComponent + "Props = {\n\ttitle: string;\n}\n"
+				});
+
+				await writeFile({
+					pathFile: files.exportInterfaceGenerated,
+					contentFile: "export type { " + formatNameFunctionComponent.nameComponent + "Props } from './" + formatName + ".d.ts';"
 				});
 			}
 
@@ -266,16 +292,16 @@ export function activate(context: vscode.ExtensionContext) {
 					if (["types", "interfaces"].includes(chooseInterface)) {
 						writeFile({
 							pathFile: files.componentGenerated,
-							contentFile: "import type { " + formatNameFunctionComponent.nameComponent + "Props } from './" + (chooseInterface === "types" ? '@types' : 'interfaces') + "';\n\nimport * as S from './" + formatName + "-styles';\n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "({title}: " + formatNameFunctionComponent.nameComponent + "Props) {\n	return (\n		<S.Container>Hello World</S.Container>\n	);\n}"
+							contentFile: "import type { " + formatNameFunctionComponent.nameComponent + "Props } from './" + (chooseInterface === "types" ? '@types' : 'interfaces') + "';\n\nimport * as S from './styles';\n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "({title}: " + formatNameFunctionComponent.nameComponent + "Props) {\n	return (\n		<S.Container>Hello World</S.Container>\n	);\n}"
 						});
 					} else {
 						writeFile({
 							pathFile: files.componentGenerated,
-							contentFile: "import * as S from './" + formatName + "-styles'; \n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "() {\n	return (\n		<S.Container>Hello World</S.Container>\n	);\n};"
+							contentFile: "import * as S from './styles'; \n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "() {\n	return (\n		<S.Container>Hello World</S.Container>\n	);\n};"
 						});
 					}
 					break;
-				case "no-library":
+				case "css-modules":
 					writeFile({
 						pathFile: files.styleGenerated,
 						contentFile: "export const container = {};\n"
@@ -284,12 +310,48 @@ export function activate(context: vscode.ExtensionContext) {
 					if (["types", "interfaces"].includes(chooseInterface)) {
 						writeFile({
 							pathFile: files.componentGenerated,
-							contentFile: "import { container } from './" + formatName + "-styles'; \nimport { " + formatNameFunctionComponent.nameComponent + "Props } from './" + (chooseInterface === "types" ? '@types' : 'interfaces') + "';\n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "({title}: " + formatNameFunctionComponent.nameComponent + "Props) {\n	return (\n		<div className={container}>Hello World</div>\n	);\n}\n\nexport default " + formatNameFunctionComponent.nameFunctionComponent + ";"
+							contentFile: "import { " + formatNameFunctionComponent.nameComponent + "Props } from './" + (chooseInterface === "types" ? '@types' : 'interfaces') + "';\nimport { container } from './styles';\n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "({title}: " + formatNameFunctionComponent.nameComponent + "Props) {\n	return (\n		<div className={container}>Hello World</div>\n	);\n}\n\nexport default " + formatNameFunctionComponent.nameFunctionComponent + ";"
 						});
 					} else {
 						writeFile({
 							pathFile: files.componentGenerated,
-							contentFile: "import { container } from './" + formatName + "-styles'; \n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "() {\n	return (\n		<div className={container}>Hello World</div>\n	);\n}\n\nexport default " + formatNameFunctionComponent.nameFunctionComponent + ";"
+							contentFile: "import { container } from './styles'; \n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "() {\n	return (\n		<div className={container}>Hello World</div>\n	);\n}\n\nexport default " + formatNameFunctionComponent.nameFunctionComponent + ";"
+						});
+					}
+					break;
+				case "css":
+					writeFile({
+						pathFile: files.styleGenerated,
+						contentFile: ".container{ }\n"
+					});
+
+					if (["types", "interfaces"].includes(chooseInterface)) {
+						writeFile({
+							pathFile: files.componentGenerated,
+							contentFile: "import { " + formatNameFunctionComponent.nameComponent + "Props } from './" + (chooseInterface === "types" ? '@types' : 'interfaces') + "';\nimport './styles.css';\n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "({title}: " + formatNameFunctionComponent.nameComponent + "Props) {\n	return (\n		<div className='container'>Hello World</div>\n	);\n}\n\nexport default " + formatNameFunctionComponent.nameFunctionComponent + ";"
+						});
+					} else {
+						writeFile({
+							pathFile: files.componentGenerated,
+							contentFile: "import './styles.css'; \n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "() {\n	return (\n		<div className={container}>Hello World</div>\n	);\n}\n\nexport default " + formatNameFunctionComponent.nameFunctionComponent + ";"
+						});
+					}
+					break;
+				case "sass":
+					writeFile({
+						pathFile: files.styleGenerated,
+						contentFile: ".container{ }\n"
+					});
+
+					if (["types", "interfaces"].includes(chooseInterface)) {
+						writeFile({
+							pathFile: files.componentGenerated,
+							contentFile: "import { " + formatNameFunctionComponent.nameComponent + "Props } from './" + (chooseInterface === "types" ? '@types' : 'interfaces') + "';\nimport './styles.scss';\n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "({title}: " + formatNameFunctionComponent.nameComponent + "Props) {\n	return (\n		<div className='container'>Hello World</div>\n	);\n}\n\nexport default " + formatNameFunctionComponent.nameFunctionComponent + ";"
+						});
+					} else {
+						writeFile({
+							pathFile: files.componentGenerated,
+							contentFile: "import './styles.scss'; \n\nexport function " + formatNameFunctionComponent.nameFunctionComponent + "() {\n	return (\n		<div className={container}>Hello World</div>\n	);\n}\n\nexport default " + formatNameFunctionComponent.nameFunctionComponent + ";"
 						});
 					}
 					break;

@@ -43,7 +43,7 @@ This extension, upon receiving a component name, generates a test file using the
 
 ### Step 5:
 - Select the desired style library.
-- Options include `Styled-Components`, `Style without library`, or `Without style`.
+- Options include `Styled-Components`, `CSS`, `SASS`, `CSS Modules`, or `Without style`.
 
 ![Step 4](./src/img/step-five.png)
 
@@ -58,12 +58,12 @@ This extension, upon receiving a component name, generates a test file using the
 - Available formats: `Kebab Case` and `Pascal Case``.
 - Examples:
   - KebabCase:
-    - `button-submit-styles.ts`
+    - `styles.ts`
     - `button-submit.spec.tsx`
     - `button-submit.tsx`
     - `index.ts`
   - PascalCase:
-    - `ButtonSubmit-styles.ts`
+    - `styles.ts`
     - `ButtonSubmit.spec.tsx`
     - `ButtonSubmit.tsx`
     - `index.ts`

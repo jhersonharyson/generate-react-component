@@ -4,19 +4,30 @@ interface GenerateFilesPros{
   pathComponent: string;
   componentType: string;
   nameComponent: string;
-  generateStyle: boolean;
+  styleType: string;
   generateInterface: string;
 }
 
-export const generateFiles = ({pathComponent, componentType, nameComponent, generateStyle, generateInterface}: GenerateFilesPros) => {
+const getStyleFileExtension = (styleType: string) => {
+  const extensions: any = {
+    "css": ".css",
+    "sass": ".scss",
+    "styled-components": ".ts",
+    "css-modules": ".ts",  
+  }
+
+  return extensions[styleType] || ".ts"
+}
+
+export const generateFiles = ({pathComponent, componentType, nameComponent, styleType, generateInterface}: GenerateFilesPros) => {
   const fs = require('fs');
 	const path = require('path');
 
   const generateFileComponent = path.join(pathComponent, nameComponent + '.tsx');
   const generateFileTest = path.join(pathComponent, nameComponent + '.spec.tsx');
-  const generateFileStyle = generateStyle && path.join(pathComponent, nameComponent + '-styles.ts');
+  const generateFileStyle = styleType !== "no-style" && path.join(pathComponent, 'styles' + getStyleFileExtension(styleType));
   const generateFileExportComponent = path.join(pathComponent, 'component' ===  componentType ? 'index.ts' : 'page.tsx');
-  const generateFileInterface = ["types", "interfaces"].includes(generateInterface) && path.join(pathComponent, generateInterface === "types" ? '@types' : 'interfaces', nameComponent + '-props.interface.ts');
+  const generateFileInterface = ["types", "interfaces"].includes(generateInterface) && path.join(pathComponent, generateInterface === "types" ? '@types' : 'interfaces', nameComponent + '.d.ts');
   const generateFileExportInterface = ["types", "interfaces"].includes(generateInterface) && path.join(pathComponent, generateInterface === "types" ? '@types' : 'interfaces', 'index.ts');
 
   return {
